@@ -12,7 +12,7 @@ class DataEncoder:
         compute default boxes
         '''
         scale = 1024.
-        sizes = [s / scale for s in (32, 256, 512)] # 当32改为64时，achor与label匹配的正样本数目更多
+        sizes = [32 / scale, 256 / scale, 512 / scale] # 当32改为64时，achor与label匹配的正样本数目更多
                                                     # anchor's size.In the paper, the first output layer size is (32, 64, 128)
         aspect_ratios = ((1,2,4), (1,), (1,)) # more understanding
         feature_map_sizes = (32, 16, 8)
@@ -165,6 +165,8 @@ class DataEncoder:
         loc [21842,4]
         conf [21824,2]
         '''
+        #print('conf=', conf)
+        #print('loc=', loc)
         variances = [0.1, 0.2]
         cxcy = loc[:,:2] * variances[0] * self.default_boxes[:,2:] + self.default_boxes[:,:2]
         wh  = torch.exp(loc[:,2:] * variances[1]) * self.default_boxes[:,2:]
